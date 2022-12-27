@@ -1,5 +1,5 @@
-/* @flow */
-import _ from 'lodash';
+import _ from "lodash";
+import { Rule } from "eslint";
 
 import {
   getStyleImportNodeData,
@@ -10,27 +10,26 @@ import {
   getClassesMap,
   getExportPropsMap,
   getFilePath,
-} from '../core';
+} from "../core";
 
-import type { JsNode } from '../types';
-
-export default {
+const rule: Rule.RuleModule = {
   meta: {
     docs: {
-      description: 'Checks that you are using the existent css/scss/less classes',
+      description:
+        "Checks that you are using the existent css/scss/less classes",
       recommended: true,
     },
     schema: [
       {
-        type: 'object',
+        type: "object",
         properties: {
-          camelCase: { enum: [true, 'dashes', 'only', 'dashes-only'] }
+          camelCase: { enum: [true, "dashes", "only", "dashes-only"] },
         },
-      }
+      },
     ],
   },
-  create (context: Object) {
-    const camelCase = _.get(context, 'options[0].camelCase');
+  create(context) {
+    const camelCase = _.get(context, "options[0].camelCase");
 
     /*
        maps variable name to property Object
@@ -52,22 +51,18 @@ export default {
     const map = {};
 
     return {
-      ImportDeclaration (node: JsNode) {
+      ImportDeclaration(node) {
         const styleImportNodeData = getStyleImportNodeData(node);
 
         if (!styleImportNodeData) {
           return;
         }
 
-        const {
-          importName,
-          styleFilePath,
-          importNode,
-        } = styleImportNodeData;
+        const { importName, styleFilePath, importNode } = styleImportNodeData;
 
         const styleFileAbsolutePath = getFilePath(context, styleFilePath);
-        let classesMap = {};
-        let exportPropsMap = {};
+        let classesMap: Record<string, boolean> | null = {};
+        let exportPropsMap: Record<string, boolean> | null = {};
 
         if (fileExists(styleFileAbsolutePath)) {
           const ast = getAST(styleFileAbsolutePath);
@@ -86,14 +81,14 @@ export default {
         // save node for reporting unused styles
         _.set(map, `${importName}.node`, importNode);
       },
-      MemberExpression: (node: JsNode) => {
+      MemberExpression: (node) => {
         /*
            Check if property exists in css/scss file as class
          */
 
-        const objectName = node.object.name;
+        const objectName = (node.object as any).name;
 
-        const propertyName = getPropertyName(node, camelCase);
+        const propertyName = getPropertyName(node);
 
         if (!propertyName) {
           return;
@@ -102,11 +97,20 @@ export default {
         const classesMap = _.get(map, `${objectName}.classesMap`);
         const exportPropsMap = _.get(map, `${objectName}.exportPropsMap`);
 
-        if (classesMap && classesMap[propertyName] == null &&
-            exportPropsMap && exportPropsMap[propertyName] == null) {
-          context.report(node.property, `Class or exported property '${propertyName}' not found`);
+        if (
+          classesMap &&
+          classesMap[propertyName] == null &&
+          exportPropsMap &&
+          exportPropsMap[propertyName] == null
+        ) {
+          context.report({
+            node: node.property,
+            message: `Class or exported property '${propertyName}' not found`,
+          });
         }
-      }
+      },
     };
-  }
+  },
 };
+
+export default rule;

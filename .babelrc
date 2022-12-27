@@ -1,11 +1,7 @@
 {
   "presets": [
-    "es2015",
-    "stage-1"
-  ],
-  "plugins": [
-    "syntax-flow",
-    "transform-flow-strip-types"
+    ["@babel/preset-env", { "targets": { "node": 12 } }],
+    "@babel/preset-typescript"
   ],
   "sourceMaps": "inline"
 }

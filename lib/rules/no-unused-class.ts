@@ -1,7 +1,7 @@
-/* @flow */
-import fp from 'lodash/fp';
-import _ from 'lodash';
-import path from 'path';
+import fp from "lodash/fp";
+import _ from "lodash";
+import path from "path";
+import { Rule } from "eslint";
 
 import {
   getStyleImportNodeData,
@@ -11,29 +11,27 @@ import {
   getFilePath,
   getAST,
   fileExists,
-} from '../core';
+} from "../core";
 
-import type { JsNode } from '../types';
-
-export default {
+const rule: Rule.RuleModule = {
   meta: {
     docs: {
-      description: 'Checks that you are using all css/scss/less classes',
+      description: "Checks that you are using all css/scss/less classes",
       recommended: true,
     },
     schema: [
       {
-        type: 'object',
+        type: "object",
         properties: {
-          camelCase: { enum: [true, 'dashes', 'only', 'dashes-only'] },
-          markAsUsed: { type: 'array' },
+          camelCase: { enum: [true, "dashes", "only", "dashes-only"] },
+          markAsUsed: { type: "array" },
         },
-      }
+      },
     ],
   },
-  create (context: Object) {
-    const markAsUsed = _.get(context, 'options[0].markAsUsed');
-    const camelCase = _.get(context, 'options[0].camelCase');
+  create(context) {
+    const markAsUsed = _.get(context, "options[0].markAsUsed");
+    const camelCase = _.get(context, "options[0].camelCase");
 
     /*
        maps variable name to property Object
@@ -57,23 +55,19 @@ export default {
     const map = {};
 
     return {
-      ImportDeclaration (node: JsNode) {
+      ImportDeclaration(node) {
         const styleImportNodeData = getStyleImportNodeData(node);
 
         if (!styleImportNodeData) {
           return;
         }
 
-        const {
-          importName,
-          styleFilePath,
-          importNode,
-        } = styleImportNodeData;
+        const { importName, styleFilePath, importNode } = styleImportNodeData;
 
         const styleFileAbsolutePath = getFilePath(context, styleFilePath);
 
-        let classes = {};
-        let classesMap = {};
+        let classes: Record<string, boolean> | null = {};
+        let classesMap: Record<string, boolean> | null = {};
 
         if (fileExists(styleFileAbsolutePath)) {
           // this will be used to mark s.foo as used in MemberExpression
@@ -91,19 +85,22 @@ export default {
         // save file path for reporting unused styles
         _.set(map, `${importName}.filePath`, styleFilePath);
       },
-      MemberExpression: (node: JsNode) => {
+      MemberExpression: (node) => {
         /*
            Check if property exists in css/scss file as class
          */
 
-        const objectName = node.object.name;
-        const propertyName = getPropertyName(node, camelCase);
+        const objectName = (node.object as any).name;
+        const propertyName = getPropertyName(node);
 
         if (!propertyName) {
           return;
         }
 
-        const className = _.get(map, `${objectName}.classesMap.${propertyName}`);
+        const className = _.get(
+          map,
+          `${objectName}.classesMap.${propertyName}`
+        );
 
         if (className == null) {
           return;
@@ -112,7 +109,7 @@ export default {
         // mark this property has used
         _.set(map, `${objectName}.classes.${className}`, true);
       },
-      'Program:exit' () {
+      "Program:exit"() {
         /*
            Check if all classes defined in css/scss file are used
          */
@@ -140,14 +137,21 @@ export default {
           // classNames not marked as true are unused
           const unusedClasses = fp.compose(
             fp.keys,
-            fp.omitBy(fp.identity), // omit truthy values
+            fp.omitBy(fp.identity) // omit truthy values
           )(classes);
 
           if (!_.isEmpty(unusedClasses)) {
-            context.report(node, `Unused classes found in ${path.basename(filePath)}: ${unusedClasses.join(', ')}`);
+            context.report({
+              node,
+              message: `Unused classes found in ${path.basename(
+                filePath
+              )}: ${unusedClasses.join(", ")}`,
+            });
           }
         });
-      }
+      },
     };
-  }
+  },
 };
+
+export default rule;
