@@ -1,5 +1,5 @@
 {
-  "name": "eslint-plugin-css-modules",
+  "name": "eslint-plugin-css-modules-kapwing",
   "version": "3.0.0",
   "description": "Checks that you are using the existent css/scss/less classes, no more no less",
   "main": "build/index.js",
@@ -10,11 +10,12 @@
   "scripts": {
     "watch": "babel lib -d build --extensions '.ts' --watch",
     "build": "rm -rf build && babel lib -d build --extensions '.ts'",
+    "deploy": "yarn version && yarn build && yarn zip && yarn release-gemfury",
     "lint": "eslint lib test",
     "test": "jest test/*",
-    "my-pre-publish": "concurrently 'npm run test' 'npm run build'",
-    "my-publish": "npm run my-pre-publish && yarn publish",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "release-gemfury": "fury push --as=kapwing eslint-plugin-css-modules-kapwing.tgz",
+    "zip": "yarn pack --filename eslint-plugin-css-modules-kapwing.tgz"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -25,11 +26,6 @@
     "eslint-plugin",
     "css-modules"
   ],
-  "author": {
-    "name": "Atif Afzal",
-    "email": "atif5801@gmail.com",
-    "url": "http://atfzl.me"
-  },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
