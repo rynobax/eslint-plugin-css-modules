@@ -50,7 +50,7 @@ export const getRegularClassesMap = (ast: gASTNode): ClassMapType => {
   ast.traverseByType("ruleset", (node) => ruleSets.push(node));
 
   return fp.compose(
-    fp.reduce((result, key) => {
+    fp.reduce((result, key: any) => {
       result[key] = false; // classes haven't been used
       return result;
     }, {}),
@@ -69,7 +69,7 @@ export const getComposesClassesMap = (ast: gASTNode): ClassMapType => {
   ast.traverseByType("declaration", (node) => declarations.push(node));
 
   return fp.compose(
-    fp.reduce((result, key) => {
+    fp.reduce((result, key: any) => {
       result[key] = true; // mark composed classes as true
       return result;
     }, {}),
@@ -113,7 +113,7 @@ export const getExtendClassesMap = (ast: gASTNode): ClassMapType => {
   ast.traverseByType("extend", (node) => extendNodes.push(node));
 
   return fp.compose(
-    fp.reduce((result, key) => {
+    fp.reduce((result, key: any) => {
       result[key] = true; // mark extend classes as true
       return result;
     }, {}),

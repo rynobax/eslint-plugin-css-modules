@@ -61,7 +61,7 @@ const rule: Rule.RuleModule = {
         const { importName, styleFilePath, importNode } = styleImportNodeData;
 
         const styleFileAbsolutePath = getFilePath(context, styleFilePath);
-        let classesMap: Record<string, boolean> | null = {};
+        let classesMap: Record<string, string> | null = {};
         let exportPropsMap: Record<string, boolean> | null = {};
 
         if (fileExists(styleFileAbsolutePath)) {

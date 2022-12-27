@@ -358,6 +358,21 @@ ruleTester.run("no-undef-class", rule, {
       `,
       options: [{ camelCase: "dashes-only" }],
     }),
+    /*
+       Import inside scss file
+     */
+    test({
+      code: `
+        import s from './cssImport.scss';
+
+        export default Foo = () => (
+          <div className={s.foo}>
+            <div className={s.bar}></div>
+          </div>
+        );
+      `,
+      only: true,
+    }),
   ],
   /*
      invalid cases

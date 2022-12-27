@@ -67,7 +67,7 @@ const rule: Rule.RuleModule = {
         const styleFileAbsolutePath = getFilePath(context, styleFilePath);
 
         let classes: Record<string, boolean> | null = {};
-        let classesMap: Record<string, boolean> | null = {};
+        let classesMap: Record<string, string> | null = {};
 
         if (fileExists(styleFileAbsolutePath)) {
           // this will be used to mark s.foo as used in MemberExpression

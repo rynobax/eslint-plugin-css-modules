@@ -66,7 +66,7 @@ export const getClassesMap = (
   classes: Record<string, boolean> | null,
   camelCase: string | boolean
 ) => {
-  const classesMap: Record<string, boolean> = {};
+  const classesMap: Record<string, string> = {};
 
   // Unroll the loop because of performance!
   // Remember that this function will run on every lint (e.g.: on file save)
