@@ -64,10 +64,12 @@ const rule: Rule.RuleModule = {
         let exportPropsMap: Record<string, boolean> | null = {};
 
         const ast = getAST(styleFilePath, context);
-        const classes = ast && getStyleClasses(ast);
 
-        classesMap = classes && getClassesMap(classes, camelCase);
-        exportPropsMap = ast && getExportPropsMap(ast);
+        if (ast) {
+          const classes = getStyleClasses(ast);
+          classesMap = classes && getClassesMap(classes, camelCase);
+          exportPropsMap = getExportPropsMap(ast);
+        }
 
         // this will be used to check if classes are defined
         _.set(map, `${importName}.classesMap`, classesMap);

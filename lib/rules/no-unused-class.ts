@@ -69,8 +69,10 @@ const rule: Rule.RuleModule = {
 
         // this will be used to mark s.foo as used in MemberExpression
         const ast = getAST(styleFilePath, context);
-        classes = ast && getStyleClasses(ast);
-        classesMap = classes && getClassesMap(classes, camelCase);
+        if (ast) {
+          classes = getStyleClasses(ast);
+          classesMap = classes && getClassesMap(classes, camelCase);
+        }
 
         _.set(map, `${importName}.classes`, classes);
         _.set(map, `${importName}.classesMap`, classesMap);
