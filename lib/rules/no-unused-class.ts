@@ -30,7 +30,7 @@ const rule: Rule.RuleModule = {
     ],
   },
   create(context) {
-    const markAsUsed = _.get(context, "options[0].markAsUsed");
+    const markAsUsed: any = _.get(context, "options[0].markAsUsed");
     const camelCase = _.get(context, "options[0].camelCase");
 
     /*
@@ -124,7 +124,7 @@ const rule: Rule.RuleModule = {
            then the loop will be run 2 times
          */
         _.forIn(map, (o) => {
-          const { classes, node, filePath } = o;
+          const { classes, node, filePath } = o as any;
 
           /*
              if option is passed to mark a class as used, example:
