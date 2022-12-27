@@ -60,17 +60,14 @@ const rule: Rule.RuleModule = {
 
         const { importName, styleFilePath, importNode } = styleImportNodeData;
 
-        const styleFileAbsolutePath = getFilePath(context, styleFilePath);
         let classesMap: Record<string, string> | null = {};
         let exportPropsMap: Record<string, boolean> | null = {};
 
-        if (fileExists(styleFileAbsolutePath)) {
-          const ast = getAST(styleFileAbsolutePath);
-          const classes = ast && getStyleClasses(ast);
+        const ast = getAST(styleFilePath, context);
+        const classes = ast && getStyleClasses(ast);
 
-          classesMap = classes && getClassesMap(classes, camelCase);
-          exportPropsMap = ast && getExportPropsMap(ast);
-        }
+        classesMap = classes && getClassesMap(classes, camelCase);
+        exportPropsMap = ast && getExportPropsMap(ast);
 
         // this will be used to check if classes are defined
         _.set(map, `${importName}.classesMap`, classesMap);

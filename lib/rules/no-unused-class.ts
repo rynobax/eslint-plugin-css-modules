@@ -64,17 +64,13 @@ const rule: Rule.RuleModule = {
 
         const { importName, styleFilePath, importNode } = styleImportNodeData;
 
-        const styleFileAbsolutePath = getFilePath(context, styleFilePath);
-
         let classes: Record<string, boolean> | null = {};
         let classesMap: Record<string, string> | null = {};
 
-        if (fileExists(styleFileAbsolutePath)) {
-          // this will be used to mark s.foo as used in MemberExpression
-          const ast = getAST(styleFileAbsolutePath);
-          classes = ast && getStyleClasses(ast);
-          classesMap = classes && getClassesMap(classes, camelCase);
-        }
+        // this will be used to mark s.foo as used in MemberExpression
+        const ast = getAST(styleFilePath, context);
+        classes = ast && getStyleClasses(ast);
+        classesMap = classes && getClassesMap(classes, camelCase);
 
         _.set(map, `${importName}.classes`, classes);
         _.set(map, `${importName}.classesMap`, classesMap);

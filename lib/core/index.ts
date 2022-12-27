@@ -15,6 +15,7 @@ import {
   getICSSExportPropsMap,
   eliminateGlobals,
 } from "./traversalUtils";
+import { Rule } from "eslint";
 
 const styleExtensionRegex = /\.(s?css|less)$/;
 
@@ -132,16 +133,39 @@ export const fileExists = (filePath: string): boolean => {
   }
 };
 
-export const getAST = (filePath: string): gASTNode | null => {
-  const fileContent = fs.readFileSync(filePath);
+export const getAST = (
+  relPath: string,
+  context: Rule.RuleContext
+): gASTNode | null => {
+  const absPath = getFilePath(context, relPath);
+  if (!fileExists(absPath)) return null;
+  const fileContent = fs.readFileSync(absPath);
 
-  const syntax = path.extname(filePath).slice(1); // remove leading .
+  const syntax = path.extname(absPath).slice(1); // remove leading .
 
   const ast = gonzales.parse(fileContent.toString(), { syntax });
 
   if (!ast) {
     // it will be silent and will not show any error
     return null;
+  }
+
+  try {
+    const newContent = [...ast.content];
+    for (const node of ast.content) {
+      if (node.type !== "atrule") continue;
+      const firstNode = node.content[0];
+      if (firstNode?.content?.[0]?.content !== "import") continue;
+      let path = node.content[2].content;
+      if (!path || typeof path !== "string") continue;
+      path = path.slice(1, path.length - 1);
+      const newAst = getAST(path, context);
+      if (!newAst) continue;
+      newContent.push(...newAst.content);
+    }
+    ast.content = newContent;
+  } catch (err) {
+    console.error(err);
   }
 
   return ast;

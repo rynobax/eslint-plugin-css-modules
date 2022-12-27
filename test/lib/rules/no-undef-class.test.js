@@ -371,7 +371,6 @@ ruleTester.run("no-undef-class", rule, {
           </div>
         );
       `,
-      only: true,
     }),
   ],
   /*
