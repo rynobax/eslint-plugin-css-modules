@@ -11,9 +11,7 @@
     "watch": "babel lib -d build --extensions '.ts' --watch",
     "build": "rm -rf build && babel lib -d build --extensions '.ts'",
     "lint": "eslint lib test",
-    "test": "concurrently 'npm run test:rules' 'npm run test:mocha'",
-    "test:rules": "babel-node ./test/lib/rules",
-    "test:mocha": "mocha 'test/**/*.test.js'",
+    "test": "jest test/*",
     "my-pre-publish": "concurrently 'npm run test' 'npm run build'",
     "my-publish": "npm run my-pre-publish && yarn publish",
     "prepare": "husky install"
@@ -53,7 +51,6 @@
     "babel-eslint": "^7.1.0",
     "babel-register": "^6.23.0",
     "babel-watch": "^2.0.6",
-    "chai": "^3.5.0",
     "concurrently": "^3.3.0",
     "eslint": "^8.30.0",
     "eslint-config-standard": "^6.2.1",
@@ -61,8 +58,8 @@
     "eslint-plugin-promise": "^3.3.0",
     "eslint-plugin-standard": "^2.0.1",
     "husky": "^8.0.2",
+    "jest": "^29.3.1",
     "lint-staged": "^13.1.0",
-    "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "prettier": "^2.8.1"
   },

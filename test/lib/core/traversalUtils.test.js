@@ -1,28 +1,22 @@
-/* eslint-env mocha */
+import gonzales from "../../../lib/core/gonzales";
 
-import { expect } from 'chai';
-import gonzales from '../../../lib/core/gonzales';
+import { eliminateGlobals } from "../../../lib/core/traversalUtils";
 
-import { eliminateGlobals } from '../../../lib/core/traversalUtils';
-
-describe('eliminateGlobals()', () => {
-  it('should remove :global block', () => {
+describe("eliminateGlobals()", () => {
+  it("should remove :global block", () => {
     const content = `
 :global {
   .foo {}
 }`;
 
-    const ast = gonzales.parse(
-      content,
-      { syntax: 'scss' }
-    );
+    const ast = gonzales.parse(content, { syntax: "scss" });
 
     eliminateGlobals(ast);
 
-    expect(ast.toString()).to.be.equal('\n');
+    expect(ast.toString()).toEqual("\n");
   });
 
-  it('should remove :global block, but not local', () => {
+  it("should remove :global block, but not local", () => {
     const content = `
 .bar {}
 
@@ -30,14 +24,11 @@ describe('eliminateGlobals()', () => {
   .foo {}
 }`;
 
-    const ast = gonzales.parse(
-      content,
-      { syntax: 'scss' }
-    );
+    const ast = gonzales.parse(content, { syntax: "scss" });
 
     eliminateGlobals(ast);
 
-    expect(ast.toString()).to.be.equal(
+    expect(ast.toString()).toEqual(
       `
 .bar {}
 
@@ -45,7 +36,7 @@ describe('eliminateGlobals()', () => {
     );
   });
 
-  it('should remove nested :global block', () => {
+  it("should remove nested :global block", () => {
     const content = `
 .bar {}
 
@@ -55,14 +46,11 @@ describe('eliminateGlobals()', () => {
   }
 }`;
 
-    const ast = gonzales.parse(
-      content,
-      { syntax: 'scss' }
-    );
+    const ast = gonzales.parse(content, { syntax: "scss" });
 
     eliminateGlobals(ast);
 
-    expect(ast.toString()).to.be.equal(
+    expect(ast.toString()).toEqual(
       `
 .bar {}
 
@@ -72,20 +60,17 @@ describe('eliminateGlobals()', () => {
     );
   });
 
-  it('should remove :global selector', () => {
+  it("should remove :global selector", () => {
     const content = `
 .bar {}
 
 :global .baz {}`;
 
-    const ast = gonzales.parse(
-      content,
-      { syntax: 'scss' }
-    );
+    const ast = gonzales.parse(content, { syntax: "scss" });
 
     eliminateGlobals(ast);
 
-    expect(ast.toString()).to.be.equal(
+    expect(ast.toString()).toEqual(
       `
 .bar {}
 
@@ -93,20 +78,17 @@ describe('eliminateGlobals()', () => {
     );
   });
 
-  it('should remove :global selector with multiple classes', () => {
+  it("should remove :global selector with multiple classes", () => {
     const content = `
 .bar {}
 
 :global .baz.foo {}`;
 
-    const ast = gonzales.parse(
-      content,
-      { syntax: 'scss' }
-    );
+    const ast = gonzales.parse(content, { syntax: "scss" });
 
     eliminateGlobals(ast);
 
-    expect(ast.toString()).to.be.equal(
+    expect(ast.toString()).toEqual(
       `
 .bar {}
 
@@ -114,20 +96,17 @@ describe('eliminateGlobals()', () => {
     );
   });
 
-  it('should remove classes wrapped in :global()', () => {
+  it("should remove classes wrapped in :global()", () => {
     const content = `
 .bar {}
 
 :global(.bar.foo) {}`;
 
-    const ast = gonzales.parse(
-      content,
-      { syntax: 'scss' }
-    );
+    const ast = gonzales.parse(content, { syntax: "scss" });
 
     eliminateGlobals(ast);
 
-    expect(ast.toString()).to.be.equal(
+    expect(ast.toString()).toEqual(
       `
 .bar {}
 

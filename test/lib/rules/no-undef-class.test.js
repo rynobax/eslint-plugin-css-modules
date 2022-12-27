@@ -1,12 +1,12 @@
-import { RuleTester } from 'eslint';
+import { RuleTester } from "eslint";
 
-import rule from '../../../lib/rules/no-undef-class';
+import rule from "../../../lib/rules/no-undef-class";
 
-import { test } from '../../utils';
+import { test } from "../../utils";
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('no-undef-class', rule, {
+ruleTester.run("no-undef-class", rule, {
   /*
      valid cases
    */
@@ -232,7 +232,7 @@ ruleTester.run('no-undef-class', rule, {
             </div>
           </div>
         );
-      `
+      `,
     }),
     /*
        ICSS :export pseudo-selector with a correct prop name should not give error
@@ -248,7 +248,7 @@ ruleTester.run('no-undef-class', rule, {
             </div>
           </div>
         );
-      `
+      `,
     }),
     /*
        use gonzales-primitive when gonzales fails to parse
@@ -260,7 +260,7 @@ ruleTester.run('no-undef-class', rule, {
         export default Foo = () => (
            <div className={s.foo}></div>
         );
-      `
+      `,
     }),
     /*
        check if camelCase=true classes work as expected
@@ -308,7 +308,7 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes' }],
+      options: [{ camelCase: "dashes" }],
     }),
     test({
       code: `
@@ -322,7 +322,7 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes' }],
+      options: [{ camelCase: "dashes" }],
     }),
     /*
        check if camelCase=only classes work as expected
@@ -339,7 +339,7 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'only' }],
+      options: [{ camelCase: "only" }],
     }),
     /*
        check if camelCase=dashes-only classes work as expected
@@ -356,7 +356,7 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes-only' }],
+      options: [{ camelCase: "dashes-only" }],
     }),
   ],
   /*
@@ -374,9 +374,7 @@ ruleTester.run('no-undef-class', rule, {
           <div className={s.containr}></div>
         );
       `,
-      errors: [
-        'Class or exported property \'containr\' not found'
-      ]
+      errors: ["Class or exported property 'containr' not found"],
     }),
     /*
        square bracket
@@ -389,9 +387,7 @@ ruleTester.run('no-undef-class', rule, {
           <div className={s['containr']}></div>
         );
       `,
-      errors: [
-        'Class or exported property \'containr\' not found',
-      ],
+      errors: ["Class or exported property 'containr' not found"],
     }),
     /*
        classes with global scope for selector are ignored
@@ -405,9 +401,7 @@ ruleTester.run('no-undef-class', rule, {
           <div className={s.bold}></div>
         );
       `,
-      errors: [
-        'Class or exported property \'bold\' not found',
-      ],
+      errors: ["Class or exported property 'bold' not found"],
     }),
     /*
        ICSS :export pseudo-selector with wrong prop name
@@ -424,9 +418,7 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      errors: [
-        'Class or exported property \'myProp\' not found',
-      ],
+      errors: ["Class or exported property 'myProp' not found"],
     }),
     /*
       check less support
@@ -439,9 +431,7 @@ ruleTester.run('no-undef-class', rule, {
           <div className={s.bold}></div>
         );
       `,
-      errors: [
-        'Class or exported property \'bold\' not found',
-      ],
+      errors: ["Class or exported property 'bold' not found"],
     }),
     /*
        using composes
@@ -456,9 +446,7 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      errors: [
-        'Class or exported property \'bazz\' not found',
-      ],
+      errors: ["Class or exported property 'bazz' not found"],
     }),
     /*
        composing multiple classes
@@ -474,9 +462,7 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      errors: [
-        'Class or exported property \'bazz\' not found',
-      ],
+      errors: ["Class or exported property 'bazz' not found"],
     }),
     /*
        using @extend
@@ -491,9 +477,7 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      errors: [
-        'Class or exported property \'bazz\' not found',
-      ],
+      errors: ["Class or exported property 'bazz' not found"],
     }),
     /*
        using parent selector (`&`)
@@ -509,9 +493,7 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      errors: [
-        'Class or exported property \'foo_baz\' not found',
-      ],
+      errors: ["Class or exported property 'foo_baz' not found"],
     }),
     /*
        should show errors for file that does not exist
@@ -527,8 +509,8 @@ ruleTester.run('no-undef-class', rule, {
         );
       `,
       errors: [
-        'Class or exported property \'bar\' not found',
-        'Class or exported property \'baz\' not found',
+        "Class or exported property 'bar' not found",
+        "Class or exported property 'baz' not found",
       ],
     }),
     /*
@@ -547,9 +529,7 @@ ruleTester.run('no-undef-class', rule, {
         );
       `,
       options: [{ camelCase: true }],
-      errors: [
-        'Class or exported property \'fooBaz\' not found',
-      ],
+      errors: ["Class or exported property 'fooBaz' not found"],
     }),
     test({
       code: `
@@ -564,9 +544,7 @@ ruleTester.run('no-undef-class', rule, {
         );
       `,
       options: [{ camelCase: true }],
-      errors: [
-        'Class or exported property \'foo-baz\' not found',
-      ],
+      errors: ["Class or exported property 'foo-baz' not found"],
     }),
     /*
        should detect if camel case properties are NOT defined when camelCase=dashes
@@ -589,12 +567,12 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes' }],
+      options: [{ camelCase: "dashes" }],
       errors: [
-        'Class or exported property \'snakeCased\' not found',
-        'Class or exported property \'fooBaz\' not found',
-        'Class or exported property \'already-camel-cased\' not found',
-        'Class or exported property \'foo-baz\' not found',
+        "Class or exported property 'snakeCased' not found",
+        "Class or exported property 'fooBaz' not found",
+        "Class or exported property 'already-camel-cased' not found",
+        "Class or exported property 'foo-baz' not found",
       ],
     }),
     /*
@@ -618,13 +596,13 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'only' }],
+      options: [{ camelCase: "only" }],
       errors: [
-        'Class or exported property \'fooBaz\' not found',
-        'Class or exported property \'foo-bar\' not found',
-        'Class or exported property \'already-camel-cased\' not found',
-        'Class or exported property \'snake_cased\' not found',
-        'Class or exported property \'foo-baz\' not found',
+        "Class or exported property 'fooBaz' not found",
+        "Class or exported property 'foo-bar' not found",
+        "Class or exported property 'already-camel-cased' not found",
+        "Class or exported property 'snake_cased' not found",
+        "Class or exported property 'foo-baz' not found",
       ],
     }),
     /*
@@ -648,13 +626,13 @@ ruleTester.run('no-undef-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes-only' }],
+      options: [{ camelCase: "dashes-only" }],
       errors: [
-        'Class or exported property \'snakeCased\' not found',
-        'Class or exported property \'fooBaz\' not found',
-        'Class or exported property \'foo-bar\' not found',
-        'Class or exported property \'already-camel-cased\' not found',
-        'Class or exported property \'foo-baz\' not found',
+        "Class or exported property 'snakeCased' not found",
+        "Class or exported property 'fooBaz' not found",
+        "Class or exported property 'foo-bar' not found",
+        "Class or exported property 'already-camel-cased' not found",
+        "Class or exported property 'foo-baz' not found",
       ],
     }),
   ],

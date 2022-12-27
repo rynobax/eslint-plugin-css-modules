@@ -1,12 +1,12 @@
-import { RuleTester } from 'eslint';
+import { RuleTester } from "eslint";
 
-import rule from '../../../lib/rules/no-unused-class';
+import rule from "../../../lib/rules/no-unused-class";
 
-import { test } from '../../utils';
+import { test } from "../../utils";
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('no-unused-class', rule, {
+ruleTester.run("no-unused-class", rule, {
   /*
      valid cases
    */
@@ -172,7 +172,7 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes' }],
+      options: [{ camelCase: "dashes" }],
     }),
     test({
       code: `
@@ -186,7 +186,7 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes' }],
+      options: [{ camelCase: "dashes" }],
     }),
     /*
        check if camelCase=only classes work as expected
@@ -203,7 +203,7 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'only' }],
+      options: [{ camelCase: "only" }],
     }),
     /*
        check if camelCase=dashes-only classes work as expected
@@ -220,7 +220,7 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes-only' }],
+      options: [{ camelCase: "dashes-only" }],
     }),
   ],
   /*
@@ -235,9 +235,7 @@ ruleTester.run('no-unused-class', rule, {
           <div className={s.bar}></div>
         );
       `,
-      errors: [
-        'Unused classes found in noUnusedClass1.scss: foo, bold'
-      ]
+      errors: ["Unused classes found in noUnusedClass1.scss: foo, bold"],
     }),
     /*
        ignored global scope selector class
@@ -251,9 +249,7 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      errors: [
-        'Unused classes found in noUnusedClass2.scss: foo'
-      ]
+      errors: ["Unused classes found in noUnusedClass2.scss: foo"],
     }),
     /*
        check less support
@@ -267,9 +263,7 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      errors: [
-        'Unused classes found in noUnusedClass1.less: foo'
-      ]
+      errors: ["Unused classes found in noUnusedClass1.less: foo"],
     }),
     /*
        check composes support
@@ -282,9 +276,7 @@ ruleTester.run('no-unused-class', rule, {
           <div className={s.bar}></div>
         );
       `,
-      errors: [
-        'Unused classes found in composes1.scss: baz'
-      ]
+      errors: ["Unused classes found in composes1.scss: baz"],
     }),
     /*
        check multiple composes support
@@ -297,9 +289,7 @@ ruleTester.run('no-unused-class', rule, {
           <div className={s.bar}></div>
         );
       `,
-      errors: [
-        'Unused classes found in composesMultiple1.scss: baz'
-      ]
+      errors: ["Unused classes found in composesMultiple1.scss: baz"],
     }),
     /*
        check @extend support
@@ -312,9 +302,7 @@ ruleTester.run('no-unused-class', rule, {
           <div className={s.bar}></div>
         );
       `,
-      errors: [
-        'Unused classes found in extend1.scss: baz'
-      ]
+      errors: ["Unused classes found in extend1.scss: baz"],
     }),
     /*
        using parent selector (`&`)
@@ -329,9 +317,7 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      errors: [
-        'Unused classes found in parentSelector4.scss: foo_bar',
-      ],
+      errors: ["Unused classes found in parentSelector4.scss: foo_bar"],
     }),
     test({
       code: `
@@ -341,9 +327,7 @@ ruleTester.run('no-unused-class', rule, {
           <div className={s.foo} />
         );
       `,
-      errors: [
-        'Unused classes found in parentSelector8.scss: foo_bar',
-      ],
+      errors: ["Unused classes found in parentSelector8.scss: foo_bar"],
     }),
     /*
        should detect if camel case properties are NOT used when camelCase=true
@@ -358,7 +342,7 @@ ruleTester.run('no-unused-class', rule, {
       `,
       options: [{ camelCase: true }],
       errors: [
-        'Unused classes found in noUnusedClass3.scss: bar-foo, alreadyCamelCased, snake_cased',
+        "Unused classes found in noUnusedClass3.scss: bar-foo, alreadyCamelCased, snake_cased",
       ],
     }),
     /*
@@ -374,9 +358,9 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes' }],
+      options: [{ camelCase: "dashes" }],
       errors: [
-        'Unused classes found in noUnusedClass3.scss: bar-foo, alreadyCamelCased, snake_cased',
+        "Unused classes found in noUnusedClass3.scss: bar-foo, alreadyCamelCased, snake_cased",
       ],
     }),
     /*
@@ -394,9 +378,9 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'only' }],
+      options: [{ camelCase: "only" }],
       errors: [
-        'Unused classes found in noUnusedClass3.scss: foo-bar, alreadyCamelCased',
+        "Unused classes found in noUnusedClass3.scss: foo-bar, alreadyCamelCased",
       ],
     }),
     /*
@@ -414,9 +398,9 @@ ruleTester.run('no-unused-class', rule, {
           </div>
         );
       `,
-      options: [{ camelCase: 'dashes-only' }],
+      options: [{ camelCase: "dashes-only" }],
       errors: [
-        'Unused classes found in noUnusedClass3.scss: foo-bar, alreadyCamelCased, snake_cased',
+        "Unused classes found in noUnusedClass3.scss: foo-bar, alreadyCamelCased, snake_cased",
       ],
     }),
   ],
